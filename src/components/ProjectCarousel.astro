@@ -54,6 +54,27 @@ const { projects, id = "carousel" } = Astro.props;
     color: inherit;
   }
 
+  /* Constrain card sizes inside carousel */
+  .slider__card :global(.card-thumb) {
+    aspect-ratio: 16/10;
+  }
+
+  .slider__card :global(.card-body) {
+    padding: 0.7rem 1rem 0.9rem;
+  }
+
+  .slider__card :global(.card-title) {
+    font-size: 0.88rem;
+  }
+
+  .slider__card :global(.card-summary) {
+    font-size: 0.78rem;
+    -webkit-line-clamp: 2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .slider__controls {
     display: flex;
     align-items: center;
