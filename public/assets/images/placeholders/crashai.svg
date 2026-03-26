@@ -1,0 +1,26 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark gradient background -->
+  <defs>
+    <radialGradient id="bgGradient1" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#8b4ba8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a0d42;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="400" fill="url(#bgGradient1)"/>
+
+  <!-- Camera/Eye icon - simple geometric design -->
+  <g transform="translate(300, 200)">
+    <!-- Outer circle -->
+    <circle cx="0" cy="0" r="70" fill="none" stroke="white" stroke-width="3"/>
+
+    <!-- Inner circle (iris) -->
+    <circle cx="0" cy="0" r="45" fill="none" stroke="white" stroke-width="2"/>
+
+    <!-- Center dot (pupil) -->
+    <circle cx="0" cy="0" r="20" fill="white"/>
+
+    <!-- Light reflection -->
+    <circle cx="-8" cy="-8" r="8" fill="#6a2d8f" opacity="0.6"/>
+  </g>
+</svg>

@@ -1,0 +1,53 @@
+---
+const { title, period, summary, footageUrl, projectSlug, projectColor, projectTitle } = Astro.props;
+
+const getYoutubeId = (url) => {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === "youtu.be") return parsed.pathname.slice(1);
+    if (parsed.searchParams.get("v")) return parsed.searchParams.get("v");
+    if (parsed.pathname.includes("/embed/")) return parsed.pathname.split("/embed/")[1];
+    return null;
+  } catch { return null; }
+};
+
+const formatDate = (str) => {
+  if (!str) return "";
+  const d = new Date(str + "T12:00:00");
+  return d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+};
+
+const youtubeId = getYoutubeId(footageUrl);
+const thumbnailUrl = youtubeId ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg` : null;
+const projectHref = projectSlug ? `/projects/${projectSlug}` : null;
+const dotColor = projectColor ?? "var(--accent)";
+---
+
+<li class="tl-event">
+  <span class="tl-event__dot" style={`--dot-color: ${dotColor}`} aria-hidden="true"></span>
+  <div class="tl-event__body">
+    <div class="tl-event__meta">
+      <time class="tl-event__date" datetime={period}>{formatDate(period)}</time>
+      {projectTitle && (
+        <span class="tl-event__project" style={`color: ${dotColor}`}>{projectTitle}</span>
+      )}
+    </div>
+    <h3 class="tl-event__title">{title}</h3>
+    {thumbnailUrl && (
+      <a href={footageUrl} target="_blank" rel="noreferrer" class="tl-event__thumb-link">
+        <img class="tl-event__thumb" src={thumbnailUrl} alt={`${title} footage`} loading="lazy" />
+        <span class="tl-event__play" aria-hidden="true">▶</span>
+      </a>
+    )}
+    <p class="tl-event__summary">{summary}</p>
+    <div class="tl-event__links">
+      {projectHref && (
+        <a class="text-link" href={projectHref}>View project →</a>
+      )}
+      {footageUrl && !thumbnailUrl && (
+        <a class="text-link" href={footageUrl} target="_blank" rel="noreferrer">Footage ↗</a>
+      )}
+    </div>
+  </div>
+</li>

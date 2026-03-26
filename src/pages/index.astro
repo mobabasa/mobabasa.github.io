@@ -1,0 +1,198 @@
+---
+import "../styles/base.css";
+import ProjectCarousel from "../components/ProjectCarousel.astro";
+import { allProjects } from "../data/projects.js";
+
+const homeFeatured = allProjects.filter((p) => p.featured === true);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="description" content="Electrical & Computer Engineering student at Wayne State. Projects in automotive engineering, computer vision, and software." />
+    <meta property="og:title" content="Mohamad Saab — ECE Portfolio" />
+    <meta property="og:description" content="Computers, cars, and software. ECE student at Wayne State." />
+    <meta property="og:type" content="website" />
+    <title>Mohamad Saab — ECE Portfolio</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="logo" href="/">mohamad.saab</a>
+        <div class="nav-links">
+          <a href="/projects">Projects</a>
+          <a href="/timeline">Timeline</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <p class="eyebrow">Electrical & Computer Engineering · WSU</p>
+        <h1>I build things.</h1>
+        <p class="subhead">
+          Computers, cars, and software. This is where I keep track of it all.
+        </p>
+        <div class="scroll-cue" aria-hidden="true">
+          <span class="scroll-cue__arrow"></span>
+          <span>Scroll</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Photo Banner -->
+      <section class="photo-banner fade-up">
+        <div class="photo-banner__split">
+          <div class="photo-banner__half">
+            <img src="/assets/images/headshot.jpg" alt="Professional headshot" loading="eager" fetchpriority="high" />
+          </div>
+          <div class="photo-banner__half">
+            <img src="/assets/images/working-photo.jpg" alt="Working in the shop" loading="eager" />
+          </div>
+          <div class="photo-banner__overlay">
+            <p class="photo-banner__tagline">I do both.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section class="section fade-up">
+        <div class="about-block">
+          <div class="about-block__bio">
+            <h2>About me</h2>
+            <p>
+              I've always had a thing for building stuff and taking things apart — just figuring out how they work and coming up with solutions to problems.
+              A lot of what I do is hands-on and directly related to my field, but it doesn't fit neatly on a resume.
+              Recently I've been able to slowly catalog it all in one place for easy viewing, both for myself and for anyone who's curious.
+            </p>
+            <p>
+              This isn't everything I've done — I have literally years worth of projects — but I'm working on adding the backlog as I'm able.
+              Right now I'm an Electrical &amp; Computer Engineering student at Wayne State. Most of my coding is in Python.
+              Currently messing with a computer vision project and still working on a twin-turbo 3000GT.
+            </p>
+            <div class="skills-row">
+              <span class="skill-chip">Python</span>
+              <span class="skill-chip">Linux</span>
+              <span class="skill-chip">Computer Vision</span>
+              <span class="skill-chip">Arduino</span>
+              <span class="skill-chip">Git</span>
+            </div>
+          </div>
+          <div class="about-block__cta">
+            <span class="availability-badge">Available for internships</span>
+            <a class="button" href="/timeline">View timeline →</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Featured Projects -->
+      <section class="section fade-up">
+        <div class="section-head">
+          <h2>Featured projects</h2>
+          <a class="text-link" href="/projects">View all →</a>
+        </div>
+        <ProjectCarousel projects={homeFeatured} id="home" />
+      </section>
+
+    </main>
+
+    <footer class="site-footer">
+      <p>Available for internships · <a class="text-link" href="mailto:mobabasa@gmail.com">mobabasa@gmail.com</a></p>
+    </footer>
+
+    <style>
+      /* Photo Banner */
+      .photo-banner {
+        padding: 0 clamp(16px, 5vw, 80px);
+        margin-top: 24px;
+      }
+
+      .photo-banner__split {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        height: 420px;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .photo-banner__half {
+        overflow: hidden;
+      }
+
+      .photo-banner__half img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .photo-banner__overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.15) 100%);
+        pointer-events: none;
+      }
+
+      .photo-banner__tagline {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 700;
+        color: #fff;
+        text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        letter-spacing: -0.02em;
+        margin: 0;
+      }
+
+      /* About Block */
+      .about-block {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 48px;
+        align-items: flex-start;
+      }
+
+      .about-block__cta {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-end;
+      }
+
+      @media (max-width: 768px) {
+        .photo-banner__split {
+          height: 280px;
+        }
+
+        .about-block {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+
+        .about-block__cta {
+          align-items: flex-start;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .photo-banner__split {
+          height: 200px;
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); observer.unobserve(e.target); } }),
+        { threshold: 0.08 }
+      );
+      document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,186 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+const { projects, id = "carousel" } = Astro.props;
+---
+
+<div class="slider" data-slider={id}>
+  <div class="slider__viewport">
+    <div class="slider__track">
+      {projects.map((project) => (
+        <a class="slider__card" href={`/projects/${project.slug}`}>
+          <ProjectCard {...project} />
+        </a>
+      ))}
+    </div>
+  </div>
+  <div class="slider__controls">
+    <button class="slider__btn slider__btn--prev" type="button" aria-label="Previous">‹</button>
+    <div class="slider__dots">
+      {projects.map((_, i) => (
+        <button
+          class={`slider__dot ${i === 0 ? "is-active" : ""}`}
+          type="button"
+          data-index={i}
+          aria-label={`Page ${i + 1}`}
+        />
+      ))}
+    </div>
+    <button class="slider__btn slider__btn--next" type="button" aria-label="Next">›</button>
+  </div>
+</div>
+
+<style>
+  .slider {
+    position: relative;
+  }
+
+  .slider__viewport {
+    overflow: hidden;
+    border-radius: 14px;
+  }
+
+  .slider__track {
+    display: flex;
+    gap: 16px;
+    transition: transform 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+    will-change: transform;
+  }
+
+  .slider__card {
+    flex: 0 0 calc(33.333% - 11px);
+    min-width: 0;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .slider__controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 16px 0 0;
+  }
+
+  .slider__btn {
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slider__btn:hover {
+    color: var(--ink);
+    border-color: var(--muted);
+    background: var(--panel);
+  }
+
+  .slider__btn:disabled {
+    opacity: 0.3;
+    cursor: default;
+  }
+
+  .slider__dots {
+    display: flex;
+    gap: 8px;
+  }
+
+  .slider__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    border: none;
+    background: var(--line);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+  }
+
+  .slider__dot.is-active {
+    background: var(--accent);
+    transform: scale(1.3);
+  }
+
+  @media (max-width: 900px) {
+    .slider__card {
+      flex: 0 0 calc(50% - 8px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .slider__card {
+      flex: 0 0 85%;
+    }
+  }
+</style>
+
+<script define:vars={{ id }}>
+  const slider = document.querySelector(`[data-slider="${id}"]`);
+  if (slider) {
+    const track = slider.querySelector('.slider__track');
+    const cards = slider.querySelectorAll('.slider__card');
+    const dots = slider.querySelectorAll('.slider__dot');
+    const prevBtn = slider.querySelector('.slider__btn--prev');
+    const nextBtn = slider.querySelector('.slider__btn--next');
+
+    let page = 0;
+    let interval;
+
+    const getPerPage = () => {
+      const w = window.innerWidth;
+      if (w <= 560) return 1;
+      if (w <= 900) return 2;
+      return 3;
+    };
+
+    const getMaxPage = () => Math.max(0, cards.length - getPerPage());
+
+    const update = () => {
+      const perPage = getPerPage();
+      const cardEl = cards[0];
+      const gap = 16;
+      const cardWidth = cardEl.offsetWidth + gap;
+      track.style.transform = `translateX(-${page * cardWidth}px)`;
+
+      dots.forEach((dot, i) => {
+        dot.classList.toggle('is-active', i === page);
+        dot.style.display = i <= getMaxPage() ? '' : 'none';
+      });
+    };
+
+    const goTo = (p) => {
+      page = Math.max(0, Math.min(p, getMaxPage()));
+      update();
+    };
+
+    const startAuto = () => {
+      interval = setInterval(() => {
+        const max = getMaxPage();
+        goTo(page >= max ? 0 : page + 1);
+      }, 4000);
+    };
+
+    const resetAuto = () => {
+      clearInterval(interval);
+      startAuto();
+    };
+
+    prevBtn.addEventListener('click', (e) => { e.preventDefault(); goTo(page - 1); resetAuto(); });
+    nextBtn.addEventListener('click', (e) => { e.preventDefault(); goTo(page + 1); resetAuto(); });
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', (e) => { e.preventDefault(); goTo(i); resetAuto(); });
+    });
+
+    window.addEventListener('resize', () => update());
+    update();
+    startAuto();
+  }
+</script>

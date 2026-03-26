@@ -1,0 +1,25 @@
+---
+const { title, role, description, tags = [], status, color, coverImage, category } = Astro.props;
+---
+
+<article class="card" style={color ? `--project-color: ${color}` : ""}>
+  <div class="card-thumb">
+    {coverImage
+      ? <img src={coverImage} alt={title} loading="lazy" />
+      : <div class="card-thumb__placeholder"></div>
+    }
+    {status === "ongoing" && (
+      <span class="card-thumb__badge">Ongoing</span>
+    )}
+  </div>
+  <div class="card-body">
+    <p class="card-category">{category}</p>
+    <h3 class="card-title">{title}</h3>
+    <p class="card-summary">{description}</p>
+    <div class="tag-row">
+      {tags.map((tag) => (
+        <span class="tag">{tag}</span>
+      ))}
+    </div>
+  </div>
+</article>

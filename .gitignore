@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.astro/
+.vite/
+.DS_Store
+
+# Large video files (hosted elsewhere or too big for GitHub)
+public/assets/videos/apple-repair/youtube_edit.mp4
+public/assets/videos/apple-repair/YOUTUBE_DESCRIPTION.txt

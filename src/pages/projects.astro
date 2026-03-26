@@ -1,0 +1,296 @@
+---
+import "../styles/base.css";
+import ProjectCard from "../components/ProjectCard.astro";
+import ProjectCarousel from "../components/ProjectCarousel.astro";
+import { allProjects } from "../data/projects.js";
+
+const featured = allProjects.filter((p) => p.featured || p.status === "ongoing");
+const autoProjects = allProjects.filter((p) => p.category === "automotive" && p.status === "past");
+const compProjects = allProjects.filter((p) => (p.category === "computers" || p.category === "software") && p.status === "past");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>Projects — Mohamad Saab</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="logo" href="/">mohamad.saab</a>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          <a class="is-active" href="/projects">Projects</a>
+          <a href="/timeline">Timeline</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <p class="eyebrow">All projects</p>
+        <h1>Everything I've built.</h1>
+        <p class="subhead">Cars, code, and whatever else I've pulled apart and put back together.</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <!-- Search -->
+        <div class="project-controls">
+          <label class="project-search">
+            <span class="sr-only">Search projects</span>
+            <input
+              id="project-search"
+              type="search"
+              placeholder="Search projects…"
+            />
+          </label>
+        </div>
+
+        <!-- Featured / Ongoing — carousel -->
+        <h2 class="cat-label">What I'm Working On</h2>
+        <ProjectCarousel projects={featured} id="projects" />
+
+        <!-- Automotive — compact list -->
+        <h2 class="cat-label">Automotive</h2>
+        <div class="compact-list" data-grid="projects">
+          {autoProjects.map((project) => (
+            <a
+              class="compact-row"
+              href={`/projects/${project.slug}`}
+              data-title={project.title}
+              data-description={project.description}
+              data-category={project.category}
+              data-tags={(project.tags || []).join(",")}
+            >
+              {project.coverImage ? (
+                <img class="compact-thumb" src={project.coverImage} alt="" loading="lazy" />
+              ) : (
+                <div class="compact-thumb compact-thumb--empty"></div>
+              )}
+              <div class="compact-info">
+                <span class="compact-title">{project.title}</span>
+                <span class="compact-desc">{project.description}</span>
+              </div>
+              <div class="compact-tags">
+                {(project.tags || []).slice(0, 2).map((tag) => (
+                  <span class="tag tag--sm">{tag}</span>
+                ))}
+              </div>
+              <span class="compact-arrow">→</span>
+            </a>
+          ))}
+        </div>
+
+        <!-- Computers & Software — compact list -->
+        <h2 class="cat-label">Computers & Software</h2>
+        <div class="compact-list" data-grid="projects">
+          {compProjects.map((project) => (
+            <a
+              class="compact-row"
+              href={`/projects/${project.slug}`}
+              data-title={project.title}
+              data-description={project.description}
+              data-category={project.category}
+              data-tags={(project.tags || []).join(",")}
+            >
+              {project.coverImage ? (
+                <img class="compact-thumb" src={project.coverImage} alt="" loading="lazy" />
+              ) : (
+                <div class="compact-thumb compact-thumb--empty"></div>
+              )}
+              <div class="compact-info">
+                <span class="compact-title">{project.title}</span>
+                <span class="compact-desc">{project.description}</span>
+              </div>
+              <div class="compact-tags">
+                {(project.tags || []).slice(0, 2).map((tag) => (
+                  <span class="tag tag--sm">{tag}</span>
+                ))}
+              </div>
+              <span class="compact-arrow">→</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>← <a class="text-link" href="/">Back home</a> &nbsp;·&nbsp; <a class="text-link" href="mailto:mobabasa@gmail.com">mobabasa@gmail.com</a></p>
+    </footer>
+
+    <style>
+      /* Category Labels */
+      .cat-label {
+        font-size: 0.75rem;
+        font-family: "IBM Plex Mono", monospace;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        margin: 48px 0 20px 0;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .cat-label:first-of-type {
+        margin-top: 0;
+      }
+
+      /* Compact List Rows */
+      .compact-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .compact-row {
+        display: grid;
+        grid-template-columns: 56px 1fr auto 24px;
+        gap: 16px;
+        align-items: center;
+        padding: 14px 16px;
+        border-radius: 8px;
+        transition: background 0.15s;
+        text-decoration: none;
+        color: inherit;
+      }
+
+      .compact-row:hover {
+        background: var(--panel-2);
+      }
+
+      .compact-thumb {
+        width: 56px;
+        height: 40px;
+        border-radius: 6px;
+        object-fit: cover;
+        background: var(--panel-2);
+        flex-shrink: 0;
+      }
+
+      .compact-thumb--empty {
+        border: 1px solid var(--line);
+      }
+
+      .compact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .compact-title {
+        font-weight: 500;
+        font-size: 0.95rem;
+        color: var(--ink);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .compact-desc {
+        font-size: 0.8rem;
+        color: var(--muted);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .compact-tags {
+        display: flex;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .tag--sm {
+        font-size: 0.65rem;
+        padding: 2px 8px;
+      }
+
+      .compact-arrow {
+        color: var(--muted);
+        font-size: 0.9rem;
+        transition: transform 0.15s, color 0.15s;
+      }
+
+      .compact-row:hover .compact-arrow {
+        color: var(--accent);
+        transform: translateX(3px);
+      }
+
+      @media (max-width: 768px) {
+        .compact-row {
+          grid-template-columns: 48px 1fr 24px;
+        }
+
+        .compact-tags {
+          display: none;
+        }
+
+        .compact-thumb {
+          width: 48px;
+          height: 36px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .compact-row {
+          grid-template-columns: 1fr 24px;
+        }
+
+        .compact-thumb {
+          display: none;
+        }
+      }
+    </style>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); observer.unobserve(e.target); } }),
+        { threshold: 0.05 }
+      );
+      document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    </script>
+    <script>
+      const grids = document.querySelectorAll('[data-grid="projects"]');
+      const searchInput = document.getElementById("project-search");
+      const state = { query: "" };
+      const normalize = (v) => v.toLowerCase();
+
+      const matchesSearch = (el) => {
+        if (!state.query) return true;
+        const q = normalize(state.query);
+        const title = normalize(el.dataset.title || "");
+        const desc = normalize(el.dataset.description || "");
+        const cat = normalize(el.dataset.category || "");
+        const tags = normalize(el.dataset.tags || "");
+        return title.includes(q) || desc.includes(q) || cat.includes(q) || tags.includes(q);
+      };
+
+      const applySearch = () => {
+        grids.forEach((grid) => {
+          const items = grid.querySelectorAll(".card-link, .compact-row");
+          items.forEach((el) => {
+            el.style.display = matchesSearch(el) ? "" : "none";
+          });
+        });
+
+        // Hide category labels when all their items are hidden
+        document.querySelectorAll(".cat-label").forEach((label) => {
+          const next = label.nextElementSibling;
+          if (!next) return;
+          const visible = next.querySelectorAll(".card-link, .compact-row");
+          const anyVisible = Array.from(visible).some((el) => el.style.display !== "none");
+          label.style.display = anyVisible ? "" : "none";
+        });
+      };
+
+      if (searchInput) {
+        searchInput.addEventListener("input", (e) => { state.query = e.target.value; applySearch(); });
+      }
+    </script>
+  </body>
+</html>

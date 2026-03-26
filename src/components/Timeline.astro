@@ -1,0 +1,78 @@
+---
+import { timeline } from "../data/timeline.js";
+import { projects } from "../data/projects.js";
+
+const projectById = new Map(projects.map((p) => [p.id, p]));
+
+const formatDate = (str) => {
+  if (!str) return "";
+  return new Date(str + "T12:00:00").toLocaleDateString("en-US", { month: "short", year: "numeric" });
+};
+
+const getYoutubeId = (url) => {
+  if (!url) return null;
+  try {
+    const p = new URL(url);
+    if (p.hostname === "youtu.be") return p.pathname.slice(1);
+    return p.searchParams.get("v") || null;
+  } catch { return null; }
+};
+
+// Sort all events newest-first, group by year
+const sorted = [...timeline].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+const byYear = sorted.reduce((acc, event) => {
+  const year = new Date(event.date + "T12:00:00").getFullYear();
+  if (!acc[year]) acc[year] = [];
+  acc[year].push(event);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).sort((a, b) => b - a);
+---
+
+<div class="tl-wrap fade-up">
+  {years.map((year) => (
+    <div class="tl-year-group">
+      <div class="tl-year-label">{year}</div>
+      <div class="tl-rows">
+        {byYear[year].map((event) => {
+          const project = projectById.get(event.projectId);
+          const dotColor = project?.color ?? "var(--accent)";
+          const slug = project?.slug;
+          const ytId = getYoutubeId(event.footageUrl);
+          const thumb = ytId ? `https://img.youtube.com/vi/${ytId}/hqdefault.jpg` : null;
+
+          return (
+            <details class="tl-row">
+              <summary class="tl-row__summary">
+                <span class="tl-row__dot" style={`--dot-color: ${dotColor}`} aria-hidden="true"></span>
+                <time class="tl-row__date">{formatDate(event.date)}</time>
+                <span class="tl-row__title">{event.title}</span>
+                {project && (
+                  <span class="tl-row__project" style={`color: ${dotColor}`}>{project.title}</span>
+                )}
+                <span class="tl-row__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="tl-row__detail">
+                <p class="tl-row__summary-text">{event.summary}</p>
+                {thumb && (
+                  <a class="tl-row__thumb-link" href={event.footageUrl} target="_blank" rel="noreferrer">
+                    <img class="tl-row__thumb" src={thumb} alt={event.title} loading="lazy" />
+                    <span class="tl-row__play" aria-hidden="true">▶</span>
+                  </a>
+                )}
+                <div class="tl-row__links">
+                  {slug && <a class="text-link" href={`/projects/${slug}`}>View project →</a>}
+                  {event.footageUrl && !thumb && (
+                    <a class="text-link" href={event.footageUrl} target="_blank" rel="noreferrer">Footage ↗</a>
+                  )}
+                </div>
+              </div>
+            </details>
+          );
+        })}
+      </div>
+    </div>
+  ))}
+</div>

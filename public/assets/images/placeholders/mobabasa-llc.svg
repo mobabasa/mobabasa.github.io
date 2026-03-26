@@ -1,0 +1,28 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark gradient background -->
+  <defs>
+    <radialGradient id="bgGradient3" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" style="stop-color:#6b7a8f;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1f2637;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="400" fill="url(#bgGradient3)"/>
+
+  <!-- Briefcase icon -->
+  <g transform="translate(300, 200)">
+    <!-- Main briefcase body -->
+    <rect x="-55" y="-30" width="110" height="70" rx="5" fill="none" stroke="white" stroke-width="2.5"/>
+
+    <!-- Briefcase handle -->
+    <path d="M -35 -30 Q -35 -55 0 -55 Q 35 -55 35 -30" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+
+    <!-- Lock center top -->
+    <circle cx="0" cy="-25" r="5" fill="none" stroke="white" stroke-width="2"/>
+    <line x1="0" y1="-15" x2="0" y2="-5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- Interior lines (compartments) -->
+    <line x1="-55" y1="10" x2="55" y2="10" stroke="white" stroke-width="1.5" opacity="0.5"/>
+    <line x1="0" y1="-30" x2="0" y2="40" stroke="white" stroke-width="1.5" opacity="0.5"/>
+  </g>
+</svg>

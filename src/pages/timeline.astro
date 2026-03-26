@@ -1,0 +1,50 @@
+---
+import "../styles/base.css";
+import Timeline from "../components/Timeline.astro";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <title>Timeline — Mohamad Saab</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="logo" href="/">mohamad.saab</a>
+        <div class="nav-links">
+          <a href="/projects">Projects</a>
+          <a class="is-active" href="/timeline">Timeline</a>
+        </div>
+      </nav>
+      <div class="hero">
+        <p class="eyebrow">Timeline</p>
+        <h1>Everything, in order.</h1>
+        <p class="subhead">Click any event to expand it.</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="section">
+        <Timeline />
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>← <a class="text-link" href="/">Home</a> &nbsp;·&nbsp; <a class="text-link" href="/projects">Projects</a></p>
+    </footer>
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-visible"); observer.unobserve(e.target); } }),
+        { threshold: 0.05 }
+      );
+      document.querySelectorAll(".fade-up").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>
