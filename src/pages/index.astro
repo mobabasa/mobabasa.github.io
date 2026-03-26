@@ -3,7 +3,17 @@ import "../styles/base.css";
 import ProjectCarousel from "../components/ProjectCarousel.astro";
 import { allProjects } from "../data/projects.js";
 
-const homeFeatured = allProjects.filter((p) => p.featured === true);
+const favoriteIds = [
+  "mitsubishi-3000gt-vr4",
+  "vehicle-detection-model",
+  "ford-fusion",
+  "goldshell-mining",
+  "first-project-car",
+  "truenas-home-server",
+];
+const homeFeatured = favoriteIds
+  .map((id) => allProjects.find((p) => p.id === id))
+  .filter(Boolean);
 ---
 
 <!doctype html>
@@ -64,12 +74,12 @@ const homeFeatured = allProjects.filter((p) => p.featured === true);
           <div class="about-block__bio">
             <h2>About me</h2>
             <p>
-              I've always had a thing for building stuff and taking things apart — just figuring out how they work and coming up with solutions to problems.
-              A lot of what I do is hands-on and directly related to my field, but it doesn't fit neatly on a resume.
-              Recently I've been able to slowly catalog it all in one place for easy viewing, both for myself and for anyone who's curious.
+              I've always had a thing for building stuff and taking things apart. Figuring out how things work and coming up with solutions to problems is kind of just what I do.
+              A lot of it is hands-on and directly related to my field, but it doesn't fit neatly on a resume.
+              Recently I've been able to slowly catalog it all in one place so I can keep track of it myself and so other people can see it too.
             </p>
             <p>
-              This isn't everything I've done — I have literally years worth of projects — but I'm working on adding the backlog as I'm able.
+              This isn't everything I've done. I have literally years worth of projects, but I'm working on adding the backlog as I'm able.
               Right now I'm an Electrical &amp; Computer Engineering student at Wayne State. Most of my coding is in Python.
               Currently messing with a computer vision project and still working on a twin-turbo 3000GT.
             </p>
@@ -91,7 +101,7 @@ const homeFeatured = allProjects.filter((p) => p.featured === true);
       <!-- Featured Projects -->
       <section class="section fade-up">
         <div class="section-head">
-          <h2>Featured projects</h2>
+          <h2>Some of my favorite projects</h2>
           <a class="text-link" href="/projects">View all →</a>
         </div>
         <ProjectCarousel projects={homeFeatured} id="home" />
