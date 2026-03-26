@@ -138,6 +138,11 @@ const projects = [
       ],
     },
     videos: [
+      "/assets/videos/ford-fusion/clip1_welding_arc.mp4",
+      "/assets/videos/ford-fusion/clip2_perfect_weld.mp4",
+      "/assets/videos/ford-fusion/clip3_hands_on.mp4",
+      "/assets/videos/ford-fusion/clip4_timelapse.mp4",
+      "/assets/videos/ford-fusion/clip5_completed_system.mp4",
       "/assets/videos/ford-fusion/exhaust_valves_demo.mp4",
       "/assets/videos/ford-fusion/exhaust_finished.mp4",
       "/assets/videos/ford-fusion/wiring_driving.mp4",
