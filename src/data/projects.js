@@ -85,6 +85,11 @@ const projects = [
       "/assets/images/mitsu/IMG_9454.JPG",
       "/assets/images/mitsu/IMG_9455.JPG",
     ],
+    videos: [
+      "/assets/videos/mitsu/first_drive_full.mp4",
+      "/assets/videos/mitsu/first_drive_clip.mp4",
+      "/assets/videos/mitsu/first_drive_short.mp4",
+    ],
   },
 {
     id: "vehicle-detection-model",
